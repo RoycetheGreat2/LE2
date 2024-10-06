@@ -1,0 +1,30 @@
+ps = 4
+ds = 10
+cs = 4
+total = 0
+elements = []
+for i in range(cs):
+    elements.append(list(map(int, input().split())))
+elements = sorted(elements, key = lambda elements: elements[2], reverse = False)
+parent = [i for i in range(ps)]
+rank = [1] * ps
+def find(n):
+    res = n
+    while res != parent[res]:
+        parent[res] = parent[parent[res]]
+        res = parent[res]
+    return res
+def union(n1, n2, z):
+    p1, p2 = find(n1), find(n2)
+    if p1 == p2:
+        return 0
+    if rank[p2] > rank[p1]:
+        parent[p1] = p2
+        rank[p2] += rank[p1]
+    else:
+        parent[p2] = p1
+        rank[p1] += rank[p2]
+    return z
+for [x, y, z] in elements:
+    total += union(x, y, z)
+print(total)
